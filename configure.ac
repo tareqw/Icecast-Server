@@ -204,3 +204,16 @@ doc/assets/Makefile doc/assets/css/Makefile doc/assets/font/Makefile
 doc/assets/img/Makefile web/Makefile web/assets/Makefile web/assets/css/Makefile
 web/assets/font/Makefile admin/Makefile admin/includes/Makefile win32/Makefile
  examples/Makefile])
+
+echo "
+Icecast configuration
+---------------------
+Version       : ${VERSION}
+cURL          : ${have_curl}
+TLS (openSSL) : ${have_openssl}
+
+Format/Codec support:
+  Ogg         : ${have_ogg}
+  Theora      : ${have_theora}
+  Speex       : ${have_speex}
+  Kate        : ${have_kate}"
