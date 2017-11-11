@@ -26,7 +26,7 @@ EXTRA_icecast_SOURCES = curl.c yp.c \
     format_vorbis.c format_theora.c format_speex.c
 
 icecast_DEPENDENCIES = @ICECAST_OPTIONAL@ common/net/libicenet.la common/thread/libicethread.la \
-    common/httpp/libicehttpp.la common/log/libicelog.la common/avl/libiceavl.la common/timing/libicetiming.la
+    common/httpp/libicehttpp.la common/log/libicelog.la common/avl/libiceavl.la common/timing/libicetiming.la format_vorbis.o
 icecast_LDADD = $(icecast_DEPENDENCIES) @XIPH_LIBS@ @KATE_LIBS@
 
 AM_CFLAGS = @XIPH_CFLAGS@
