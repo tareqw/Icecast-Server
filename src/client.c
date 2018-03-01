@@ -132,7 +132,7 @@ void client_destroy(client_t *client)
     if (client == NULL)
         return;
 
-    if (client->reuse != ICECAST_REUSE_CLOSE) {
+    if (client->protocol != ICECAST_PROTOCOL_GOPHER && client->reuse != ICECAST_REUSE_CLOSE) {
         client_reuseconnection(client);
         return;
     }
@@ -146,6 +146,10 @@ void client_destroy(client_t *client)
 
     if (auth_release_client(client))
         return;
+
+    if (client->protocol == ICECAST_PROTOCOL_GOPHER && client->respcode != 0) {
+        client_send_bytes(client, "\r\n.\r\n", 5);
+    }
 
     /* write log entry if ip is set (some things don't set it, like outgoing
      * slave requests
@@ -253,9 +257,11 @@ void client_send_error(client_t *client, int status, int plain, const char *mess
     }
     data->len = strlen(data->data);
 
-    snprintf(client->refbuf->data + ret, PER_CLIENT_REFBUF_SIZE - ret,
+    if (client->protocol != ICECAST_PROTOCOL_GOPHER) {
+        snprintf(client->refbuf->data + ret, PER_CLIENT_REFBUF_SIZE - ret,
              "Content-Length: %llu\r\n\r\n",
              (long long unsigned int)data->len);
+    }
 
     client->respcode = status;
     client->refbuf->len = strlen (client->refbuf->data);
